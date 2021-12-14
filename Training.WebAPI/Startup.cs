@@ -30,6 +30,8 @@ namespace Training.WebAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Training.WebAPI", Version = "v1" });
             });
+
+            //services.AddTransient<>
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
