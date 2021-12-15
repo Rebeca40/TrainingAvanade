@@ -6,7 +6,9 @@ namespace Training.Application.Books
 {
     public class BookService : IBookService
     {
+
         private List<Book> _books;
+
 
         public BookService()
         {
@@ -16,7 +18,7 @@ namespace Training.Application.Books
                 _books.Add(new Book { Id = i, ISBN = $"XXX-{i}{i}", Name = $"Book {i}", Author = $"Author {i}" });
         }
 
-        void IBookService.Create(Book book)
+        public void Create(Book book)
         {
             _books.Add(book);
         }
