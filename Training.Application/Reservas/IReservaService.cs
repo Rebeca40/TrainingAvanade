@@ -5,9 +5,9 @@ namespace Training.Application.Reservas
 {
     public interface IReservaService
     {
-        IEnumerable<ReservaDto> Get();
-        ReservaDto Get(Guid id);
+        IEnumerable<ReservaDto> Get(Guid userId);
         void Create(ReservaDto reserva);
-        void Update(ReservaDto reserva);
+        void Update(ReservasUpdateDto reserva);
+        void Delete(Guid id);
     }
 }

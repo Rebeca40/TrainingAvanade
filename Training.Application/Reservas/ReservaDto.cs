@@ -4,9 +4,10 @@ namespace Training.Application.Reservas
 {
     public class ReservaDto
     {
-        public DateTime FechaCreacion { get; set; }
-        public DateTime FechaReserva { get; set; }
-        public string NombreUsuario { get; set; }
-        public string NombreLibro { get; set; }
+        public Guid Id { get; set; }
+        public Guid BookId { get; set; }
+        public Guid UserId { get; set; }
+        public DateTime CreationDate { get; set; }
+        public DateTime ExpectedDeliveryDate { get; set; }
     }
 }

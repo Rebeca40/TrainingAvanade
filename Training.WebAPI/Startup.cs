@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Training.Application.Books;
+using Training.Application.Reservas;
 using Training.Application.Reservations;
 using Training.Core.Repositories;
 using Training.DAL;
@@ -41,6 +42,8 @@ namespace Training.WebAPI
             services.AddSingleton<IBookRepository, BookRepository>();
             services.AddTransient<IReservationService, ReservationService>();
             services.AddSingleton<IReservationRepository, ReservationRepository>();
+            services.AddTransient<IReservaService, ReservaService>();
+            services.AddSingleton<IReservaRepository, ReservaRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

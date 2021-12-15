@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using Training.Application.Reservas;
-using Training.Core.Models;
 
 namespace Training.WebAPI.Controllers
 {
@@ -15,14 +15,13 @@ namespace Training.WebAPI.Controllers
             _reservaService = reservaService;
         }
 
-        [HttpGet]
-        public IActionResult Get()
+        [HttpGet("{userId}")]
+        public IActionResult Get(Guid userId)
         {
-            var reservas = _reservaService.Get();
+            var reserva = _reservaService.Get(userId);
 
-            return Ok(reservas);
+            return Ok(reserva);
         }
-
 
         [HttpPost]
         public IActionResult Post(ReservaDto reserva)
@@ -33,9 +32,17 @@ namespace Training.WebAPI.Controllers
         }
 
         [HttpPut]
-        public IActionResult Put(ReservaDto reserva)
+        public IActionResult Put(ReservasUpdateDto reservationUpdate)
         {
-            _reservaService.Update(reserva);
+            _reservaService.Update(reservationUpdate);
+
+            return Ok();
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(Guid id)
+        {
+            _reservaService.Delete(id);
 
             return Ok();
         }

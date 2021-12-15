@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Training.Application.Reservations;
 using Training.Core.Models;
 using Training.Core.Repositories;
 
@@ -7,55 +9,66 @@ namespace Training.Application.Reservas
 {
     public class ReservaService : IReservaService
     {
-        private readonly IReservaService _reservaRepository;
+        private readonly IReservaRepository _reservaRepository;
 
-        public ReservaService(IReservaService reservaRepository)
+        public ReservaService(IReservaRepository reservaRepository)
         {
             _reservaRepository = reservaRepository;
         }
 
-        public IEnumerable<ReservaDto> Get()
-        {
-            throw new NotImplementedException();
+        public IEnumerable<ReservaDto> Get(Guid userId)
+         {
+            return _reservaRepository
+                .GetByUser(userId)
+                .Select(x => MapEntity(x));
         }
 
-        public ReservaDto Get(Guid id)
+        public void Create(ReservaDto reservaDto)
         {
-            throw new NotImplementedException();
+            var reserva = MapDto(reservaDto);
+
+            _reservaRepository.Create(reserva);
         }
 
-        public void Create(ReservaDto dto)
+        public void Update(ReservasUpdateDto reservaUpdateDto)
         {
-            var reserva = Map(dto);
+            var reserva = _reservaRepository.GetById(reservaUpdateDto.Id);
 
-            reserva.Id = Guid.NewGuid();
+            reserva.ExpectedDeliveryDate = reservaUpdateDto.NewExpectedDeliveryDate;
 
-            _reservaRepository.Create(dto);
+            _reservaRepository.Update(reserva);
         }
 
-        public void Update(ReservaDto reserva)
+        public void Delete(Guid id)
         {
-            throw new NotImplementedException();
+            var reserva = _reservaRepository.GetById(id);
+
+            reserva.IsDeleted = true;
+
+            _reservaRepository.Update(reserva);
         }
 
-
-        private Reserva Map(ReservaDto dto)
-        {
-            return new Reserva
-            {
-                FechaCreacion = dto.FechaCreacion,
-                FechaDevolucion = dto.FechaReserva,
-                NombreLibro = dto.NombreLibro
-            };
-        }
-
-        private ReservaDto MapEntity(Reserva dto)
+        private ReservaDto MapEntity(Reserva entity)
         {
             return new ReservaDto
             {
-                FechaReserva = dto.FechaCreacion,
-                FechaCreacion = dto.FechaDevolucion,
-                NombreLibro = dto.NombreLibro
+                Id = entity.Id,
+                UserId = entity.UserId,
+                BookId = entity.BookId,
+                CreationDate = entity.CreationDate,
+                ExpectedDeliveryDate = entity.ExpectedDeliveryDate,
+            };
+        }
+
+        private Reserva MapDto(ReservaDto entity)
+        {
+            return new Reserva
+            {
+                Id = entity.Id,
+                UserId = entity.UserId,
+                BookId = entity.BookId,
+                CreationDate = entity.CreationDate,
+                ExpectedDeliveryDate = entity.ExpectedDeliveryDate,
             };
         }
     }
