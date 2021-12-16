@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +17,10 @@ namespace Training.WebAPI
 {
     public class Startup
     {
+
+        private const string AUTH_SCHEMA = "BasicAuthentication";
+
+
         public IConfiguration Configuration { get; }
 
 
@@ -37,6 +42,9 @@ namespace Training.WebAPI
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Training.WebAPI", Version = "v1" });
             });
 
+            services.AddAuthentication(AUTH_SCHEMA)
+                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>(AUTH_SCHEMA, null);
+
             services.AddTransient<ICustomDateTimeProvider, CustomDateTimeProvider>();
             services.AddTransient<IBookService, BookService>();
             services.AddSingleton<IBookRepository, BookRepository>();
@@ -44,6 +52,7 @@ namespace Training.WebAPI
             services.AddSingleton<IReservationRepository, ReservationRepository>();
             services.AddTransient<IReservaService, ReservaService>();
             services.AddSingleton<IReservaRepository, ReservaRepository>();
+            services.AddSingleton<IUserRepository, UserRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -57,6 +66,7 @@ namespace Training.WebAPI
 
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
