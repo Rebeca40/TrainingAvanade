@@ -62,6 +62,7 @@ namespace Training.WebAPI
             services.AddTransient<IBookRepository, BookRepository>();
             services.AddTransient<IReservationRepository, ReservationRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IAlbumRepository, AlbumRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
