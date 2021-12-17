@@ -10,7 +10,6 @@ using Training.Application.Albums;
 namespace Training.WebAPI.Controllers
 {
     [ApiController]
-    [Authorize]
     [Route("api/[controller]")]
     public class AlbumController : ControllerBase
     {
@@ -23,7 +22,7 @@ namespace Training.WebAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(string id)
+        public IActionResult Get(Guid id)
         {
             var book = _albumService.Get(id);
 

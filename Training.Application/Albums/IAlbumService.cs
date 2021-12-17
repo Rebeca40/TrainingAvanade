@@ -8,7 +8,7 @@ namespace Training.Application.Albums
 {
     public interface IAlbumService
     {
-        AlbumDto Get(string id);
+        AlbumDto Get(Guid id);
         void Create(AlbumDto album);
     }
 }

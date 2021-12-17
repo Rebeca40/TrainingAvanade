@@ -12,25 +12,43 @@ namespace Training.Application.Albums
     public class AlbumService : ServiceBase, IAlbumService
     {
 
-        private readonly IAlbumService _albumRepository;
+        private readonly IAlbumRepository _albumRepository;
 
 
         public AlbumService(IUnitOfWork unitOfWork)
             : base(unitOfWork)
         {
-            _albumRepository = (IAlbumService)unitOfWork.AlbumRepository;
+            _albumRepository = unitOfWork.AlbumRepository;
         }
         public void Create(AlbumDto dto)
         {
-            var album = dto;
+            var album = Map(dto);
 
             _albumRepository.Create(album);
             _unitOfWork.CommitTransaction();
         }
 
-        public AlbumDto Get(string id)
+        public AlbumDto Get(Guid id)
         {
-            return _albumRepository.Get(id);
+            return MapEntity(_albumRepository.Get(id));
+        }
+
+        private Album Map(AlbumDto dto)
+        {
+            return new Album
+            {
+                Name = dto.Name,
+                Author = dto.Author
+            };
+        }
+
+        private AlbumDto MapEntity(Album dto)
+        {
+            return new AlbumDto
+            {
+                Name = dto.Name,
+                Author = dto.Author
+            };
         }
     }
 }
